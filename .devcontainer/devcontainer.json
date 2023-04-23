@@ -1,0 +1,51 @@
+{
+    // Change this property to the name of your Phaser Game
+    "name": "Your Phaser Game",
+    "build": {
+        "args": {
+            "GO_VERSION": "1.20",
+            "ALPINE_VERSION": "3.17",
+            "NODE_VERSION": "18"
+        }
+    },
+    "dockerFile": "devcontainer.Dockerfile",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+				"golang.Go",
+				"davidanson.vscode-markdownlint",
+				"shardulm94.trailing-spaces",
+				"IBM.output-colorizer",
+				"rangav.vscode-thunder-client",
+				"donjayamanne.githistory",
+				"streetsidesoftware.code-spell-checker",
+				"alexcvzz.vscode-sqlite"
+			],
+            "settings": {
+                "go.useLanguageServer": true
+            }
+        }
+    },
+    "runArgs": [
+        "-u",
+        "vscode",
+        "--cap-add=SYS_PTRACE",
+        "--security-opt",
+        "seccomp=unconfined",
+        // map SSH keys for Git
+        "-v", "${env:HOME}/.ssh:/home/vscode/.ssh:ro"
+    ],
+    "forwardPorts": [3000, 5173],
+    "portsAttributes": {
+        "3000": {
+            "label": "Go API Server entrypoint",
+            "onAutoForward": "notify",
+            "requireLocalPort": true
+        },
+        "5173": {
+            "label": "Vite Development Server entrypoint",
+            "onAutoForward": "notify",
+            "requireLocalPort": true
+        }
+    }
+}
